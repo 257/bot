@@ -20,9 +20,9 @@ wh_cmd   = ['what','how']
 cmd_classes  = {'open':read_file, 'execute':nix_cmds, 'credits':info_cmd, 'help':info_cmd, 'gdic':google_dictionary, 'geo':get_geoloc, 'log':log_conversation, 'what':parse_what, 'how':parse_how}
 
 nix_cmd  = {'uptime':execute_nix_cmd, 'ls':execute_nix_cmd, 'ping':execute_nix_cmd}
-what_cmd = ['time':commnads.getoutput, 'is the value of':.execute_nix_cmd]
+what_cmd = ['time':commnads.getoutput, 'is the value of':execute_nix_cmd]
 
-me_inf  = [ 'name':'foozy', 'family':'boozy' ]
+me_inf  = [ 'name':foozy, 'family':boozy ]
 
 non_cmd     = () # for syncing the index for now
 all_cmd_len = len(all_cmd)
@@ -33,15 +33,16 @@ all_cmd_len = len(all_cmd)
 #	except ValueError:
 #		return 10
 class nix_cmds:
-	def nixit(cmd):
+	def __init__(cmd):
 		cmd.ret = commands.getoutput("cmd")
+
 info_cmd_path_prefix = './canned/'
 class info_cmd:
 	def __init__(info):
 		f =  info_cmd_path_prefix + info
-	def ret(info):
 		for line in open(info.f, 'r'):
 			info.ret += line
+
 def do_cmd(i, msg, cmds):
 	if i == 0:
 		return "no cmd!"
