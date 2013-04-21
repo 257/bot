@@ -17,10 +17,19 @@ me_cmd   = ['dic', 'geo', 'log']
 wh_cmd   = ['what','how']
 #wh_cmd  = ['who', 'what', 'when', 'where', 'how', 'why']
 
-cmd_classes  = {'open':read_file, 'execute':nix_cmds, 'credits':info_cmd, 'help':info_cmd, 'gdic':google_dictionary, 'geo':get_geoloc, 'log':log_conversation, 'what':parse_what, 'how':parse_how}
+cmd_classes  = {'open':read_file
+		, 'execute':nix_cmd
+		, 'credits':info_cmd
+		, 'help':info_cmd
+		, 'dic':my_cmd
+		, 'geo':my_cmd
+		, 'log':my_cmd
+		, 'what':wh_q
+		, 'how':wh_q
+		}
 
-nix_cmd  = {'uptime':execute_nix_cmd, 'ls':execute_nix_cmd, 'ping':execute_nix_cmd}
-what_cmd = ['time':commnads.getoutput, 'is the value of':execute_nix_cmd]
+legal_nix_cmd  = {'uptime':1, 'ls':1, 'ping':1}
+py_what_cmd = ['time':1, 'is the value of':1]
 
 me_inf  = [ 'name':foozy, 'family':boozy ]
 
@@ -43,7 +52,7 @@ class info_cmd:
 		for line in open(info.f, 'r'):
 			info.ret += line
 
-def do_cmd(i, msg, cmds):
+def do_cmd(cmd):
 	if i == 0:
 		return "no cmd!"
 	elif i == 1:
@@ -57,16 +66,10 @@ def respond(message, sender=""):
 	message = message.strip()
 	#print "Got message",message
 	words   = message.split()
-	i = 0
-	cmd     = words[i]
-	i += 1
-	cmd_len = len(all_cmd)
-	while i < cmd_len:
-		if cmd in all_cmd[i]:
-			if i == cmd_len: # TODO: raise exception for ping
-				retstr = do_cmd(i, message, words)
-				return retstr
-		i += 1
+	cmd     = words[0]
+	if is_legal(cmd):
+		do(cmd)
+
 respond('open    foo',    'me')
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
