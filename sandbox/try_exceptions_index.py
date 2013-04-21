@@ -37,7 +37,7 @@ all_cmd_len = len(all_cmd)
 #	except ValueError:
 #		return 10
 
-def run_signle_cmd(cmds):
+def run_single_cmd(cmds):
 	if cmds[0] == 'help':
 		hf = open('./canned/' + info_cmd[, 'r')
 		print hf
