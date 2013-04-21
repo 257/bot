@@ -1,0 +1,36 @@
+credits     - state you name as the creator of this program
+help         - list of supported commands (i..e the stuff above)
+--------
+open x       -  return the contents of file 'x' from the current UNIX '     
+                environment.
+
+--------
+execute X, where X is one of the following commands:
+
+uptime       - run the uptime command on your computer
+               and print back the results.
+
+ls           - run the uptime command on your computer
+               and print back the results.
+
+ping IP      - run the ping command on your computer
+               and print back the results.
+	       Note that ping requires the "-c 2" flag. YOU SHOULD ONLY
+	       RETURN THE LAST LINE OF THE OUTPUT, OR ELSE YOU WILL TRIGGER
+	       AN INFINITE LOOP. (eg. "ping -c 2 132.216.67.18")
+--------
+what is the value of X  
+            - X is a string like (2+2)/1.5, report it's value
+what time is it
+            - state the current tiem of day
+what *      - provide a generic reply (e.g. "what's up dude?")
+
+
+how  *      - provide a generic reply (e.g. "How's it going?")
+
+
+any string that has your name in it (e.g. "is greg at home"?)
+            - respond in some creative manner
+
+please
+2 other commands and responses of your own selection

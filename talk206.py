@@ -212,7 +212,8 @@ class Talkbot206(sleekxmpp.ClientXMPP):
                     # prepare a reply
                     response = chatter.respond( text, sender=msg['from'] )  # too bad we don't use this response text (hint, hint [COMP206] )
                     # stock response: pretty boring, isn't it?
-                    replytext = "Thanks for sending: %s... [reply #%d]" % (text[0:10],replied)
+                    #replytext = "Thanks for sending: %s... [reply #%d]" % (text[0:10],replied)
+                    replytext = "%s... [reply #%d]" % (response,replied)
                     print "Sending reply",replytext
                     # send the reply
                     msg.reply( replytext ).send()
@@ -318,7 +319,7 @@ print " - This is the COMP206 talk206 chat client (part of Talk2013)."
 print " - The flags '-j' and '-p' can be used to provide the ID and password to avoid retyping them."
 print " - The flag '-q' can suppress the annoying INFO and diagnostic messages."
 print " - Use the '-h' for tips on startup arguments."
-print " - This program is for Assignment 5 and was submitted by YOURNAME YOURSTUDENTID."
+print " - This program is for Assignment 5 and was submitted by my_name[0] my_id[0]."
 print "-"*60
 
 
