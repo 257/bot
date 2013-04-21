@@ -36,9 +36,10 @@ class nix_cmds:
 	def nixit(cmd):
 		cmd.ret = commands.getoutput("cmd")
 info_cmd_path_prefix = './canned/'
-class info_cmd(info):
-	f =  info_cmd_path_prefix + info
-	def ret():
+class info_cmd:
+	def __init__(info):
+		f =  info_cmd_path_prefix + info
+	def ret(info):
 		for line in open(info.f, 'r'):
 			info.ret += line
 def do_cmd(i, msg, cmds):
