@@ -2,7 +2,7 @@
 
 import os
 import sys
-import commands
+import commands # TODO: use subprocess instead of commnads
 
 #what time is it
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
