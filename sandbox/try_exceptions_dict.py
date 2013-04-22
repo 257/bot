@@ -20,7 +20,7 @@ class cmds:
 		self.cmd = msg[0]
 		self.dcv = msg[1]
 class py(cmds):
-	def ret(cmd):
+	def ret(self):
 		return None
 class nix(cmds):
 	def ret(self):
