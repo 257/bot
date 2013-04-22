@@ -17,8 +17,12 @@ me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
 	def __init__(self, msg):
-		self.cmd = msg[0]
-		self.dcv = msg[1]
+		msg_len  = len(msg)
+		if msg_len == 1:
+			self.dcv = msg[0]
+		elif msg_len > 1:
+			self.cmd = msg[0]
+			self.dcv = msg[1]
 class py(cmds):
 	def ret(self):
 		return None
@@ -28,11 +32,10 @@ class nix(cmds):
 
 info_path_prefix = './canned/'
 class info(cmds):
-	def ret(self, cmd):
-		f =  info_path_prefix + cmd[0]
+	def ret(self):
+		f =  info_path_prefix + self.dcv
 		for line in open(f, 'r'):
-			ret += line
-		return ret
+			self.ret += line
 class my(cmds):
 	def ret(self, my):
 		return None
@@ -66,5 +69,5 @@ respond('execute uptime', 'me')
 respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
 
-#respond('credits', 'me')
+respond('credits', 'me')
 #respond('help'  , 'me')
