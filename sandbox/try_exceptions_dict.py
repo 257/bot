@@ -33,7 +33,8 @@ class nix(cmds):
 info_path_prefix = './.canned/'
 class info(cmds):
 	def ret(self):
-		f =  open(info_path_prefix + self.dcv, 'r')
+		fpath = info_path_prefix + self.dcv
+		f     = open(fpath, 'r')
 		return f.read()
 class my(cmds):
 	def ret(self, my):
