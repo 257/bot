@@ -23,8 +23,8 @@ class py(cmds):
 	def ret(cmd):
 		return None
 class nix(cmds):
-	def ret(self, cmd):
-		return commands.getoutput(cmd)
+	def ret(self):
+		return commands.getoutput(self.dcv)
 
 info_path_prefix = './canned/'
 class info(cmds):
@@ -57,7 +57,7 @@ def respond(message, sender=""):
 	words     = message.split()
 	cmd_class = classify(words)
 	cmd_class_ins = cmd_class(words)
-	print cmd_class_ins.ret(cmd_class_ins.dcv)
+	print cmd_class_ins.ret()
 	#print cmd_class_ins.ret(words)
 
 #respond('open    foo',    'me')
