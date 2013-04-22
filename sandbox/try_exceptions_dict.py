@@ -5,6 +5,7 @@ import sys
 import commands # TODO: use subprocess instead of commnads
 
 #what time is it
+from time import gmtime, strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
 
@@ -17,35 +18,47 @@ me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
 	def __init__(self, msg):
-		msg_len  = len(msg)
-		if msg_len == 1:
-			self.dcv = msg[0]
-		elif msg_len > 1:
-			self.cmd = msg[0]
-			self.dcv = msg[1]
-class py(cmds):
-	def ret(self):
-		return None
+		self.msg = msg
+		self.cmd = self.msg[0]
+		self.dcv = self.msg[1]
 class nix(cmds):
 	def ret(self):
 		return commands.getoutput(self.dcv)
 
-info_path_prefix = './.canned/'
-class info(cmds):
+class canned_info(object):
+	def __init__(self, msg):
+		self.cmd = msg[0]
+	prefix = './.canned/info/'
 	def ret(self):
-		fpath = info_path_prefix + self.dcv
-		f     = open(fpath, 'r')
+		f     = open(self.prefix + self.cmd, 'r')
+		return f.read()
+
+class py(cmds):
+	def ret(self):
+		f     = open(self.dcv, 'r')
 		return f.read()
 class my(cmds):
-	def ret(self, my):
+	def ret(self):
 		return None
 class whq(cmds):
-	def ret(self, whq):
-		return None
+	time = ['time', 'is', 'it?']
+	val  = ['is', 'the', 'value', 'of']
+	def ret(self):
+		self.msg.pop(0)
+		expresion = self.msg.pop()
+		if self.msg == self.val:
+			if expresion[-1] == '?':
+				expresion.pop()
+			eval(expresion)
+		self.msg.append(expresion)
+		if self.msg == self.time:
+			#return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+			return  strftime("%I:%M:%S %p")
+			return 
 cmd_classes  = {  'open':py
 		, 'execute':nix
-		, 'credits':info
-		, 'help':info
+		, 'credits':canned_info
+		, 'help':canned_info
 		, 'dic':my
 		, 'geo':my
 		, 'log':my
@@ -69,5 +82,8 @@ respond('execute uptime', 'me')
 respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
 
+respond('open foo'  , 'me')
 respond('credits', 'me')
-respond('help'  , 'me')
+#respond('help'  , 'me')
+respond('what time is it?'  , 'me')
+respond('what is the value of (2+2)/1.5?'  , 'me')
