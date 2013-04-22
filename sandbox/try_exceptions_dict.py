@@ -30,7 +30,7 @@ class nix(cmds):
 	def ret(self):
 		return commands.getoutput(self.dcv)
 
-info_path_prefix = './canned/'
+info_path_prefix = './.canned/'
 class info(cmds):
 	def ret(self):
 		f =  info_path_prefix + self.dcv
@@ -70,4 +70,4 @@ respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
 
 respond('credits', 'me')
-#respond('help'  , 'me')
+respond('help'  , 'me')
