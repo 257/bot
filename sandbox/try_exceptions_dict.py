@@ -35,7 +35,8 @@ class info(cmds):
 	def ret(self):
 		f =  info_path_prefix + self.dcv
 		for line in open(f, 'r'):
-			self.ret += line
+			ret += line
+			return ret
 class my(cmds):
 	def ret(self, my):
 		return None
