@@ -19,35 +19,35 @@ class cmds:
 	def __init__(self, msg):
 		self.cmd = msg[0]
 		self.dcv = msg[1]
-class py_cmds:
+class py(cmds):
 	def ret(cmd):
 		return None
 class nix(cmds):
 	def ret(self, cmd):
 		return commands.getoutput(cmd)
 
-info_cmds_path_prefix = './canned/'
-class info_cmds:
-	def ret(self, info):
-		f =  info_cmds_path_prefix + info[0]
+info_path_prefix = './canned/'
+class info(cmds):
+	def ret(self, cmd):
+		f =  info_path_prefix + cmd[0]
 		for line in open(f, 'r'):
 			ret += line
 		return ret
-class my_cmds:
+class my(cmds):
 	def ret(my):
 		return None
-class wh_q:
+class whq(cmds):
 	def ret(whq):
 		return None
-cmd_classes  = {  'open':py_cmds
+cmd_classes  = {  'open':py
 		, 'execute':nix
-		, 'credits':info_cmds
-		, 'help':info_cmds
-		, 'dic':my_cmds
-		, 'geo':my_cmds
-		, 'log':my_cmds
-		, 'what':wh_q
-		, 'how':wh_q
+		, 'credits':info
+		, 'help':info
+		, 'dic':my
+		, 'geo':my
+		, 'log':my
+		, 'what':whq
+		, 'how':whq
 		}
 def classify(msg):
 	if msg[0] in cmd_classes:
