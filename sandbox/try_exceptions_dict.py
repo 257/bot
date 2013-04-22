@@ -34,10 +34,10 @@ class info(cmds):
 			ret += line
 		return ret
 class my(cmds):
-	def ret(my):
+	def ret(self, my):
 		return None
 class whq(cmds):
-	def ret(whq):
+	def ret(self, whq):
 		return None
 cmd_classes  = {  'open':py
 		, 'execute':nix
