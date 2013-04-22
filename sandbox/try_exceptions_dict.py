@@ -19,7 +19,7 @@ class cmds(object):
 	def __init__(self, msg):
 		self.cmd = msg[0]
 		self.dcv = msg[1]
-class py(cmds):
+class CmdsPy(cmds):
 	def ret(self):
 		return None
 class nix(cmds):
