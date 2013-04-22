@@ -14,13 +14,11 @@ py_what_cmd = {'time':1, 'is the value of':1}
 
 me_info  = { 'name':'foozy', 'family':'boozy' }
 
-#all_cmd_len = len(all_cmd)
-
 class cmds(object):
 	def __init__(self, msg):
 		self.msg = msg
+		self.dcv = self.msg[-1]
 		self.cmd = self.msg[0]
-		self.dcv = self.msg[1]
 class nix(cmds):
 	def ret(self):
 		return commands.getoutput(self.dcv)
@@ -45,16 +43,15 @@ class whq(cmds):
 	val  = ['is', 'the', 'value', 'of']
 	def ret(self):
 		self.msg.pop(0)
-		expresion = self.msg.pop()
+		self.msg.pop()
 		if self.msg == self.val:
-			if expresion[-1] == '?':
-				expresion.pop()
-			eval(expresion)
-		self.msg.append(expresion)
+			if self.dcv[-1] == '?':
+				self.dcv = self.dcv.rsplit('?', 1)[0]
+			return eval(self.dcv) 
+		self.msg.append(self.dcv)
 		if self.msg == self.time:
 			#return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
 			return  strftime("%I:%M:%S %p")
-			return 
 cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':canned_info
@@ -87,3 +84,4 @@ respond('credits', 'me')
 #respond('help'  , 'me')
 respond('what time is it?'  , 'me')
 respond('what is the value of (2+2)/1.5?'  , 'me')
+respond('what is the value of (2+2)/1.5'  , 'me')
