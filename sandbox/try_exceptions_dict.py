@@ -10,14 +10,7 @@ from sets import
 #what time is it
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
-# legal words[0]
-x_direct = {'open':read_file, 'execute':execute_nix_cmd}
-info_cmd = {'credits':read_file, 'help':read_file}
-me_cmd   = ['dic', 'geo', 'log']
-wh_cmd   = ['what','how']
-#wh_cmd  = ['who', 'what', 'when', 'where', 'how', 'why']
-
-cmd_classes  = {'open':read_file
+cmd_classes  = {  'open':read_file
 		, 'execute':nix_cmd
 		, 'credits':info_cmd
 		, 'help':info_cmd
@@ -33,44 +26,36 @@ py_what_cmd = ['time':1, 'is the value of':1]
 
 me_inf  = [ 'name':foozy, 'family':boozy ]
 
-non_cmd     = () # for syncing the index for now
 all_cmd_len = len(all_cmd)
 
-#def is_nix_cmd(word):
-#	try:
-#		return nix_cmd.index(word)
-#	except ValueError:
-#		return 10
 class nix_cmds:
-	def __init__(cmd):
-		cmd.ret = commands.getoutput("cmd")
+	def ret(cmd):
+		return commands.getoutput("cmd")
 
 info_cmd_path_prefix = './canned/'
 class info_cmd:
-	def __init__(info):
+	def ret(info):
 		f =  info_cmd_path_prefix + info
 		for line in open(info.f, 'r'):
 			info.ret += line
-
-def do_cmd(cmd):
-	if i == 0:
-		return "no cmd!"
-	elif i == 1:
-		return run_signle_cmd(cmds)
-	elif i == 2:
-		return run_double_cmd(cmds)
-
-def classifier(msg):
+def classify(cmd):
+	if cmd in cmd_classes:
+		return cmd_classes[cmd]
 
 def respond(message, sender=""):
 	message = message.strip()
 	#print "Got message",message
-	words   = message.split()
-	cmd     = words[0]
-	if is_legal(cmd):
-		do(cmd)
+	words     = message.split()
+	cmd       = words[0]
+	cmd_class = classify(cmd)
+	print cmd_class.ret(cmd)
+
 
 respond('open    foo',    'me')
+
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
 respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
+
+respond('credit', 'me')
+respond('help'  , 'me')
