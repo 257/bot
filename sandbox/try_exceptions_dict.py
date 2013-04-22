@@ -15,7 +15,7 @@ me_info  = { 'name':'foozy', 'family':'boozy' }
 
 #all_cmd_len = len(all_cmd)
 
-class cmds:
+class cmds(object):
 	def __init__(self, msg):
 		self.cmd = msg[0]
 		self.dcv = msg[1]
