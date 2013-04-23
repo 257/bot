@@ -2,7 +2,8 @@
 
 import os
 import sys
-import commands # TODO: use subprocess instead of commnads
+import subprocess # TODO: use subprocess instead of commnads
+from collections import deque
 
 #what time is it
 from time import gmtime, strftime
@@ -15,20 +16,36 @@ py_what_cmd = {'time':1, 'is the value of':1}
 me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
-	def __init__(self, msg):
-		self.msg = msg
-		self.dcv = self.msg[-1]
-		self.cmd = self.msg[0]
+	cls = 'cmds'
 class nix(cmds):
+	def __init__(self, msg):
+		nix_cmd_args = {   'ls':''
+				, 'uptime':''
+				, 'ping':'-c 1'
+				}
+		msgq = deque(msg)
+		self.dcv = msgq.popleft()
+		self.cmd = msgq.popleft()
+		self.switch = nix_cmd_args[self.cmd]
+		self.arg = msgq # TODO: sanity check for ip format
 	def ret(self):
-		return commands.getoutput(self.dcv)
+		return subprocess.check_output([self.cmd, self.switch, self.arg])
 
 class canned_info(object):
+	cmd_args = {   'help':''
+		     , 'credits':''
+		   }
 	def __init__(self, msg):
-		self.cmd = msg[0]
-	prefix = './.canned/info/'
+		msgq = deque(msg)
+		msgq.appendleft('info')
+		self.dcv = msgq.popleft()
+		self.cmd = msgq.popleft()
+		self.switch = cmd_args[self.cmd]
+		self.arg = msg
 	def ret(self):
-		f     = open(self.prefix + self.cmd, 'r')
+		prefix = './.shelve'
+		can    = prefix + '/' + self.dcv + '/' + self.cmd
+		f     = open(can, 'r')
 		return f.read()
 
 class py(cmds):
@@ -79,9 +96,10 @@ respond('execute uptime', 'me')
 respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
 
-respond('open foo'  , 'me')
-respond('credits', 'me')
+#respond('open foo'  , 'me')
+#respond('credits', 'me')
 #respond('help'  , 'me')
-respond('what time is it?'  , 'me')
-respond('what is the value of (2+2)/1.5?'  , 'me')
-respond('what is the value of (2+2)/1.5'  , 'me')
+#respond('what time is it?'  , 'me')
+#respond('what is the value of (2+2)/1.5?'  , 'me')
+#respond('what is the value of (2+2)/1.5'  , 'me')
+
