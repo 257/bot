@@ -28,8 +28,7 @@ class nix(cmds):
 		self.cmd = msgq.popleft()
 		self.switch = nix_cmd_args[self.cmd]
 		# TODO: sanity check for ip format
-		for arg in msgq:
-			self.arg = self.arg + msgq.popleft()
+		self.arg = srt(msgq)
 	def ret(self):
 		#return subprocess.check_output(["echo", self.cmd + self.switch + self.arg])
 		return self.arg
