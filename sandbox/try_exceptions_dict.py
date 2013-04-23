@@ -2,7 +2,7 @@
 
 import os
 import sys
-import shlex, subprocess # TODO: use subprocess instead of commnads
+import subprocess # TODO: use subprocess instead of commnads
 #import commands
 from collections import deque
 
@@ -41,12 +41,15 @@ class nix(cmds):
 			wholeshbang.extend(self.switch)
 		if self.arg != '':
 			wholeshbang.append(self.arg)
-		nix_cmd = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
-		return nix_cmd.stdout.read()
-		#for line in nix_cmd.stdout:
-		#	if 'packets transmitted' in line:
-		#		retstr = line
-		#return retstr
+		if self.cmd == 'ping':
+			pingp = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
+			grepp = subprocess.Popen(["grep", "transmitted"], stdin=pingp.stdout, stdout=subprocess.PIPE)
+			pingp.stdout.close()
+			out   = grepp.communicate()[0]
+			return out
+
+		else:
+			return subprocess.check_output(wholeshbang)
 
 
 
