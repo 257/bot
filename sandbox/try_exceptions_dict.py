@@ -47,13 +47,13 @@ class info(cmds):
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
-		f     = open(can, 'r')
-		return f.read()
+		with open(can, 'r') as f:
+			return f.read()
 
 class py(cmds):
 	def ret(self):
-		f     = open(self.arg, 'r')
-		return f.read()
+		with open(self.arg, 'r') as f:
+			return f.read()
 class my(cmds):
 	def ret(self):
 		return None
