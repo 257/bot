@@ -12,25 +12,23 @@ from time import gmtime, strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
 
-legal_nix_cmds  = {'uptime':1, 'ls':1, 'ping':1}
-py_what_cmd = {'time':1, 'is the value of':1}
-
 me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
 	cls = 'cmds'
+ping_arg = ['-c', '1'] #, '|', 'tail', '-1']
+cmd_args = {   'ls':''
+		, 'uptime':''
+		, 'ping':ping_arg
+		, 'help':' '
+		, 'credits':' '
+	   }
 class nix(cmds):
 	def __init__(self, msg):
-		ping_arg = ['-c', '1'] #, '|', 'tail', '-1']
-		nix_cmd_args = {   'ls':''
-				, 'uptime':''
-				, 'ping':ping_arg
-				}
 		msgq = deque(msg)
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
-		self.switch = nix_cmd_args[self.cmd]
-		# TODO: sanity check for ip format
+		self.switch = cmd_args[self.cmd]
 		self.arg = ' '.join(msgq)
 	def ret(self):
 		wholeshbang = [self.cmd]
@@ -38,20 +36,16 @@ class nix(cmds):
 			wholeshbang.extend(self.switch)
 		if self.arg != '':
 			wholeshbang.append(self.arg)
-		#return wholeshbang
-		return subprocess.Popen(wholeshbang)
+		return subprocess.check_output(wholeshbang)
 
 class canned_info(object):
-	cmd_args = {   'help':' '
-		     , 'credits':' '
-		   }
 	def __init__(self, msg):
 		msgq = deque(msg)
-		msgq.appendleft('info')
+		msgq.appendleft('info') # TODO: add this to class nix and abstrac __init__ in class cmds
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
-		self.arg = msg
+		self.arg = ' '.join(msg)
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
@@ -59,6 +53,7 @@ class canned_info(object):
 		return f.read()
 
 class py(cmds):
+
 	def ret(self):
 		f     = open(self.dcv, 'r')
 		return f.read()
@@ -102,14 +97,15 @@ def respond(message, sender=""):
 
 #respond('open    foo',    'me')
 
+#respond('open foo'  , 'me')
+
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
-respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
+respond('execute ping 127.0.0.1', 'me')
 
-#respond('open foo'  , 'me')
-#respond('credits', 'me')
-#respond('help'  , 'me')
-#respond('what time is it?'  , 'me')
-#respond('what is the value of (2+2)/1.5?'  , 'me')
-#respond('what is the value of (2+2)/1.5'  , 'me')
+respond('credits', 'me')
+respond('help'  , 'me')
+respond('what time is it?'  , 'me')
+respond('what is the value of (2+2)/1.5?'  , 'me')
+respond('what is the value of (2+2)/1.5'  , 'me')
 
