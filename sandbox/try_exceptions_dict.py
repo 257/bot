@@ -27,9 +27,12 @@ class nix(cmds):
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = nix_cmd_args[self.cmd]
-		self.arg = msgq # TODO: sanity check for ip format
+		# TODO: sanity check for ip format
+		for arg in msgq:
+			self.arg = self.arg + msgq.popleft()
 	def ret(self):
-		return subprocess.check_output([self.cmd, self.switch, self.arg])
+		#return subprocess.check_output(["echo", self.cmd + self.switch + self.arg])
+		return self.arg
 
 class canned_info(object):
 	cmd_args = {   'help':''
@@ -94,7 +97,7 @@ def respond(message, sender=""):
 
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
-#respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
+respond('execute ping 127.0.0.1', 'me') # TODO: ask if they're gonna be throwing ipv6
 
 #respond('open foo'  , 'me')
 #respond('credits', 'me')
