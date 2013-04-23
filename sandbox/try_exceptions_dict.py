@@ -15,8 +15,16 @@ from time import gmtime, strftime
 me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
-	cls = 'cmds'
-ping_arg = ['-c', '1'] #, '|', 'tail', '-1']
+	def __init__(self, msg):
+		msgq = deque(msg)
+		if len(msgq) == 1:
+			msgq.appendleft('info')
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
+		self.dcv = msgq.popleft()
+		self.cmd = msgq.popleft()
+		self.switch = cmd_args[self.cmd]
+		self.arg = msgq
+ping_arg = ['-c', '1'] #, '|', 'tail', '-1'] # TODO: return only the last line
 cmd_args = {   'ls':''
 		, 'uptime':''
 		, 'ping':ping_arg
@@ -26,15 +34,6 @@ cmd_args = {   'ls':''
 		, 'is'  : 'the value of'
 	   }
 class nix(cmds):
-	def __init__(self, msg):
-		msgq = deque(msg)
-		if len(msgq) == 1:
-			msgq.appendleft('info')
-		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
-		self.dcv = msgq.popleft()
-		self.cmd = msgq.popleft()
-		self.switch = cmd_args[self.cmd]
-		self.arg = msgq
 	def ret(self):
 		self.arg = ' '.join(self.arg)
 		wholeshbang = [self.cmd]
@@ -44,16 +43,7 @@ class nix(cmds):
 			wholeshbang.append(self.arg)
 		return subprocess.check_output(wholeshbang)
 
-class canned_info(object):
-	def __init__(self, msg):
-		msgq = deque(msg)
-		if len(msgq) == 1:
-			msgq.appendleft('info')
-		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
-		self.dcv = msgq.popleft()
-		self.cmd = msgq.popleft()
-		self.switch = cmd_args[self.cmd]
-		self.arg = msgq
+class canned_info(cmds):
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
@@ -61,15 +51,6 @@ class canned_info(object):
 		return f.read()
 
 class py(cmds):
-	def __init__(self, msg):
-		msgq = deque(msg)
-		if len(msgq) == 1:
-			msgq.appendleft('info')
-		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
-		self.dcv = msgq.popleft()
-		self.cmd = msgq.popleft()
-		self.switch = cmd_args[self.cmd]
-		self.arg = msgq
 	def ret(self):
 		f     = open(self.arg, 'r')
 		return f.read()
@@ -77,15 +58,6 @@ class my(cmds):
 	def ret(self):
 		return None
 class whq(cmds):
-	def __init__(self, msg):
-		msgq = deque(msg)
-		if len(msgq) == 1:
-			msgq.appendleft('info')
-		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
-		self.dcv = msgq.popleft()
-		self.cmd = msgq.popleft()
-		self.switch = cmd_args[self.cmd]
-		self.arg = msgq
 	def ret(self):
 		if self.dcv == 'what':
 			if self.cmd == 'is':
@@ -129,7 +101,7 @@ def respond(message, sender=""):
 
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
-#respond('execute ping 127.0.0.1', 'me')
+respond('execute ping 127.0.0.1', 'me')
 
 respond('credits', 'me')
 #respond('help'  , 'me')
