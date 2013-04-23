@@ -41,8 +41,8 @@ class nix(cmds):
 			wholeshbang.extend(self.switch)
 		if self.arg != '':
 			wholeshbang.append(self.arg)
-		with subprocess.Popen(wholeshbang, stdout=subprocess.PIPE) as nix_cmd:
-			return nix_cmd.stdout.read()
+		nix_cmd = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
+		return nix_cmd.stdout.read()
 		#for line in nix_cmd.stdout:
 		#	if 'packets transmitted' in line:
 		#		retstr = line
