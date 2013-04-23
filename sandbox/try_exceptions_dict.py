@@ -28,6 +28,9 @@ cmd_args = {   'ls':''
 class nix(cmds):
 	def __init__(self, msg):
 		msgq = deque(msg)
+		if len(msgq) == 1:
+			msgq.appendleft('info')
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
@@ -44,7 +47,9 @@ class nix(cmds):
 class canned_info(object):
 	def __init__(self, msg):
 		msgq = deque(msg)
-		msgq.appendleft('info') # TODO: add this to class nix and abstrac __init__ in class cmds
+		if len(msgq) == 1:
+			msgq.appendleft('info')
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
@@ -58,6 +63,9 @@ class canned_info(object):
 class py(cmds):
 	def __init__(self, msg):
 		msgq = deque(msg)
+		if len(msgq) == 1:
+			msgq.appendleft('info')
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
@@ -71,21 +79,26 @@ class my(cmds):
 class whq(cmds):
 	def __init__(self, msg):
 		msgq = deque(msg)
+		if len(msgq) == 1:
+			msgq.appendleft('info')
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
-		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.arg = msgq
 	def ret(self):
-		if self.cmd == 'is':
-			realarg = self.arg.pop()
-			if ' '.join(self.arg) == self.switch:
-				return eval(realarg)
-			else:
-				return 'fire.random.can.back' # TODO
-		if self.cmd == 'time':
-			if ' '.join(self.arg) == self.switch:
-				return  strftime("%I:%M:%S %p")
+		if self.dcv == 'what':
+			if self.cmd == 'is':
+				realarg = self.arg.pop()
+				if ' '.join(self.arg) == self.switch:
+					return eval(realarg)
+				else:
+					return 'fire.random.can.back' # TODO
+			if self.cmd == 'time':
+				if ' '.join(self.arg) == self.switch:
+					return  strftime("%I:%M:%S %p")
+				else:
+					return 'fire.random.can.back' # TODO
 			else:
 				return 'fire.random.can.back' # TODO
 		else:
@@ -125,4 +138,5 @@ respond('what time is it'  , 'me')
 respond('what time are you coming home?'  , 'me')
 respond('what is the value of (2+2)/1.5?'  , 'me')
 respond('what is the value of (2+2)/1.5'  , 'me')
+respond('how is the value of (2+2)/1.5'  , 'me')
 
