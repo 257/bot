@@ -22,6 +22,8 @@ cmd_args = {   'ls':''
 		, 'ping':ping_arg
 		, 'help':' '
 		, 'credits':' '
+		, 'time':'is it'
+		, 'is'  : 'the value of'
 	   }
 class nix(cmds):
 	def __init__(self, msg):
@@ -29,8 +31,9 @@ class nix(cmds):
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
-		self.arg = ' '.join(msgq)
+		self.arg = msgq
 	def ret(self):
+		self.arg = ' '.join(self.arg)
 		wholeshbang = [self.cmd]
 		if self.switch != '':
 			wholeshbang.extend(self.switch)
@@ -45,7 +48,7 @@ class canned_info(object):
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = cmd_args[self.cmd]
-		self.arg = ' '.join(msg)
+		self.arg = msgq
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
@@ -53,27 +56,41 @@ class canned_info(object):
 		return f.read()
 
 class py(cmds):
-
+	def __init__(self, msg):
+		msgq = deque(msg)
+		self.dcv = msgq.popleft()
+		self.cmd = msgq.popleft()
+		self.switch = cmd_args[self.cmd]
+		self.arg = msgq
 	def ret(self):
-		f     = open(self.dcv, 'r')
+		f     = open(self.arg, 'r')
 		return f.read()
 class my(cmds):
 	def ret(self):
 		return None
 class whq(cmds):
-	time = ['time', 'is', 'it?']
-	val  = ['is', 'the', 'value', 'of']
+	def __init__(self, msg):
+		msgq = deque(msg)
+		self.dcv = msgq.popleft()
+		self.cmd = msgq.popleft()
+		self.switch = cmd_args[self.cmd]
+		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
+		self.arg = msgq
 	def ret(self):
-		self.msg.pop(0)
-		self.msg.pop()
-		if self.msg == self.val:
-			if self.dcv[-1] == '?':
-				self.dcv = self.dcv.rsplit('?', 1)[0]
-			return eval(self.dcv) 
-		self.msg.append(self.dcv)
-		if self.msg == self.time:
-			#return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-			return  strftime("%I:%M:%S %p")
+		if self.cmd == 'is':
+			realarg = self.arg.pop()
+			if ' '.join(self.arg) == self.switch:
+				return eval(realarg)
+			else:
+				return 'fire.random.can.back' # TODO
+		if self.cmd == 'time':
+			if ' '.join(self.arg) == self.switch:
+				return  strftime("%I:%M:%S %p")
+			else:
+				return 'fire.random.can.back' # TODO
+		else:
+			return 'fire.random.can.back' # TODO
+
 cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':canned_info
@@ -95,17 +112,17 @@ def respond(message, sender=""):
 	print cmd_class_ins.ret()
 	#print cmd_class_ins.ret(words)
 
-#respond('open    foo',    'me')
-
 #respond('open foo'  , 'me')
 
 respond('execute uptime', 'me')
 respond('execute ls',     'me')
-respond('execute ping 127.0.0.1', 'me')
+#respond('execute ping 127.0.0.1', 'me')
 
 respond('credits', 'me')
-respond('help'  , 'me')
+#respond('help'  , 'me')
 respond('what time is it?'  , 'me')
+respond('what time is it'  , 'me')
+respond('what time are you coming home?'  , 'me')
 respond('what is the value of (2+2)/1.5?'  , 'me')
 respond('what is the value of (2+2)/1.5'  , 'me')
 
