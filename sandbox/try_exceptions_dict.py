@@ -31,7 +31,7 @@ class nix(cmds):
 		# TODO: sanity check for ip format
 		self.arg = ' '.join(msgq)
 	def ret(self):
-		wholeshbang = [self.cmd, self.switch, self.arg]
+		wholeshbang = [self.cmd, self.arg] #.extend(self.switch)
 		return wholeshbang
 		#return subprocess.check_output(wholeshbang)
 
