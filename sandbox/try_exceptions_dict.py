@@ -2,7 +2,7 @@
 
 import os
 import sys
-import subprocess # TODO: use subprocess instead of commnads
+import shlex, subprocess # TODO: use subprocess instead of commnads
 from collections import deque
 
 #what time is it
@@ -19,19 +19,21 @@ class cmds(object):
 	cls = 'cmds'
 class nix(cmds):
 	def __init__(self, msg):
+		ping_arg = ['-c', '1']
 		nix_cmd_args = {   'ls':''
 				, 'uptime':''
-				, 'ping':'-c 1'
+				, 'ping':ping_arg
 				}
 		msgq = deque(msg)
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		self.switch = nix_cmd_args[self.cmd]
 		# TODO: sanity check for ip format
-		self.arg = str(msgq)
+		self.arg = ' '.join(msgq)
 	def ret(self):
-		#return subprocess.check_output(["echo", self.cmd + self.switch + self.arg])
-		return self.arg
+		wholeshbang = [self.cmd, self.switch, self.arg]
+		return wholeshbang
+		#return subprocess.check_output(wholeshbang)
 
 class canned_info(object):
 	cmd_args = {   'help':''
