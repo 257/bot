@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess # TODO: use subprocess instead of commnads
+import linecache
 #import commands
 from collections import deque
 
@@ -41,25 +42,23 @@ class nix(cmds):
 			wholeshbang.extend(self.switch)
 		if self.arg != '':
 			wholeshbang.append(self.arg)
+		nixp = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
 		if self.cmd == 'ping':
-			pingp = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
-			grepp = subprocess.Popen(["grep", "transmitted"], stdin=pingp.stdout, stdout=subprocess.PIPE)
-			pingp.stdout.close()
-			out   = grepp.communicate()[0]
-			return out
-
+			grepp = subprocess.Popen(
+					  ["grep", "transmitted"]
+					, stdin=nixp.stdout
+					, stdout=subprocess.PIPE)
+			nixp.stdout.close()
+			out = grepp.communicate()[0]
 		else:
-			return subprocess.check_output(wholeshbang)
-
-
-
+			out =  nixp.communicate()[0]
+		return out
 class info(cmds):
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
-		with open(can, 'r') as f:
-			return f.read()
-
+		with open(can, 'r') as beans:
+			return beans.read()
 class py(cmds):
 	def ret(self):
 		with open(self.arg, 'r') as f:
@@ -73,9 +72,10 @@ class whq(cmds):
 			if self.cmd == 'is':
 				realarg = self.arg.pop()
 				if ' '.join(self.arg) == self.switch:
-					return eval(realarg)
+					return str(eval(realarg)) # cast str here for .split
 				else:
 					return 'fire.random.can.back' # TODO
+				# http://docs.python.org/2/library/linecache.html
 			if self.cmd == 'time':
 				if ' '.join(self.arg) == self.switch:
 					return  strftime("%I:%M:%S %p")
@@ -104,8 +104,7 @@ def respond(message, sender=""):
 	words     = message.split()
 	cmd_class = classify(words)
 	cmd_class_ins = cmd_class(words)
-	print cmd_class_ins.ret()
-	#print cmd_class_ins.ret(words)
+	print cmd_class_ins.ret().strip()
 
 #respond('open foo'  , 'me')
 
