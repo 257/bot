@@ -43,7 +43,7 @@ class nix(cmds):
 			wholeshbang.append(self.arg)
 		return subprocess.check_output(wholeshbang)
 
-class canned_info(cmds):
+class info(cmds):
 	def ret(self):
 		prefix = './.shelve'
 		can    = prefix + '/' + self.dcv + '/' + self.cmd
@@ -78,8 +78,8 @@ class whq(cmds):
 
 cmd_classes  = {  'open':py
 		, 'execute':nix
-		, 'credits':canned_info
-		, 'help':canned_info
+		, 'credits':info
+		, 'help':info
 		, 'dic':my
 		, 'geo':my
 		, 'log':my
