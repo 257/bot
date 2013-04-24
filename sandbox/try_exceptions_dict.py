@@ -12,6 +12,15 @@ from time import strftime
  
 
 me_info  = { 'name':'foozy', 'family':'boozy' }
+def me_info_var():
+	ret = []
+	for info in me_info:
+		info_val = me_info[info]
+		ret.append(info_val.upper())
+		ret.append(info_val.lower())
+		ret.append(info_val[0].upper() + info_val[1:])
+	return ret
+me_info_variations = me_info_var()
 
 class cmds(object):
 	def __init__(self, msg):
@@ -95,7 +104,17 @@ class whq(cmds):
 			return cannon(self.dcv, gen)
 		else:
 			return 'how did you get here'
-class with_my_name(cmds):
+class non_cmds:
+	def __init__(self, msg):
+		self.dcv = 'non'
+		self.cmd = 'generic'
+	def ret(self):
+		return cannon(self.dcv, self.cmd)
+
+class with_my_name:
+	def __init__(self, msg):
+		self.dcv = 'with.my.name'
+		self.cmd = 'generic'
 	def ret(self):
 		return cannon(self.dcv, self.cmd)
 cmd_classes  = {  'open':py
@@ -109,12 +128,11 @@ cmd_classes  = {  'open':py
 		, 'how':whq
 		}
 def has_my_name(msg):
+	ret = non_cmds
 	for word in msg:
 		for info in me_info:
 			if word == me_info[info]:
 				ret = with_my_name
-			else:
-				ret = None
 	return ret
 
 def classify(msg):
@@ -151,4 +169,4 @@ def respond(message, sender=""):
 #respond('what is this'  , 'me')
 #respond('what the *'  , 'me')
 respond('is foozy home?', 'me')
-
+respond('is he home?', 'me')
