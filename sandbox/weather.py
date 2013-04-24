@@ -24,7 +24,7 @@ root = ET.fromstring(yourxml)
 for neighbor in root.iter('countryName'):
 	geoloc = dict(country = neighbor.text)
 for child in root.iter('ip'):
-	dict(ip = child.text)
+	geoloc.update(ip = child.text)
 for child in root[3].iter('{http://www.opengis.net/gml}name'):
 	city = child.text
 for child in root.iter('{http://www.opengis.net/gml}coordinates'):
