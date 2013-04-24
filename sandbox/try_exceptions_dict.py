@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess # TODO: use subprocess instead of commnads
 import linecache
+import random
 #import commands
 from collections import deque
 
@@ -53,12 +54,19 @@ class nix(cmds):
 		else:
 			out =  nixp.communicate()[0]
 		return out
+def cannon(dcv, cmd): # it shoots beans back:)
+	prefix = './.shelve'
+	can    = prefix + '/' + dcv + '/' + cmd
+	i = 0
+	with open(can, 'r') as beans:
+	#	return beans.read()
+		for bean in beans:
+			i += 1
+		rint = random.randint(1, i)
+	return linecache.getline(can, rint)
 class info(cmds):
 	def ret(self):
-		prefix = './.shelve'
-		can    = prefix + '/' + self.dcv + '/' + self.cmd
-		with open(can, 'r') as beans:
-			return beans.read()
+		return cannon(self.dcv, self.cmd)
 class py(cmds):
 	def ret(self):
 		with open(self.arg, 'r') as f:
@@ -66,26 +74,28 @@ class py(cmds):
 class my(cmds):
 	def ret(self):
 		return None
+
 class whq(cmds):
 	def ret(self):
+		gen = 'generic'
 		if self.dcv == 'what':
 			if self.cmd == 'is':
 				realarg = self.arg.pop()
 				if ' '.join(self.arg) == self.switch:
 					return str(eval(realarg)) # cast str here for .split
 				else:
-					return 'fire.random.can.back' # TODO
-				# http://docs.python.org/2/library/linecache.html
-			if self.cmd == 'time':
+					return cannon(self.dcv, self.cmd)
+			elif self.cmd == 'time':
 				if ' '.join(self.arg) == self.switch:
 					return  strftime("%I:%M:%S %p")
 				else:
-					return 'fire.random.can.back' # TODO
+					return cannon(self.dcv, gen)
 			else:
-				return 'fire.random.can.back' # TODO
+				return cannon(self.dcv, gen)
+		elif self.dcv == 'how':
+			return cannon(self.dcv, gen)
 		else:
-			return 'fire.random.can.back' # TODO
-
+			return 'how did you get there'
 cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':info
@@ -120,4 +130,6 @@ respond('what time are you coming home?'  , 'me')
 respond('what is the value of (2+2)/1.5?'  , 'me')
 respond('what is the value of (2+2)/1.5'  , 'me')
 respond('how is the value of (2+2)/1.5'  , 'me')
+#respond('how are you?'  , 'me')
+#respond('how are yeah'  , 'me')
 
