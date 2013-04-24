@@ -9,7 +9,6 @@ from collections import deque
 #what time is it
 from time import strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
-import urllib 
 
 me_info  = { 'name':'foozy', 'family':'boozy' }
 def me_info_var():
@@ -70,13 +69,16 @@ def cannon(dcv, cmd): # this cannon Sir, shoots beans :)
 	can    = prefix + '/' + dcv + '/' + cmd
 	with open(can, 'r') as beans:
 		bag = beans.readlines()
-		return random.choice(bag)
+		if dcv == 'info' and cmd == 'help':
+			return '\n'.join(bag)
+		else:
+			return random.choice(bag)
 class info(cmds):
 	def ret(self):
 		return cannon(self.dcv, self.cmd)
 class py(cmds):
 	def ret(self):
-		with open(self.arg, 'r') as f:
+		with open(self.cmd, 'r') as f:
 			return f.read()
 import fgeoloc
 # we go over the net here, only once
@@ -155,13 +157,11 @@ def respond(message, sender=""):
 	print cmd_class_ins.ret().strip()
 
 #respond('open foo'  , 'me')
-
 #respond('execute uptime', 'me')
 #respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me')
-#
-#respond('credits', 'me')
-#respond('help'  , 'me')
+respond('help'  , 'me')
+respond('credits', 'me')
 #respond('what time is it?'  , 'me')
 #respond('what time is it'  , 'me')
 #respond('what time are you coming home?'  , 'me')
@@ -175,11 +175,11 @@ def respond(message, sender=""):
 #respond('what the *'  , 'me')
 #respond('is foozy home?', 'me')
 #respond('is he home?', 'me')
-respond('your ip', 'me')
-respond('your logitude', 'me')
-respond('your latitude', 'me')
-respond('your city', 'me')
-respond('your country', 'me')
-respond('your provence', 'me')
-respond('your zipcode', 'me')
+#respond('your ip', 'me')
+#respond('your longitude', 'me')
+#respond('your latitude', 'me')
+#respond('your city', 'me') # TODO: unicode problem
+#respond('your country', 'me')
+#respond('your province', 'me')
+#respond('your zipcode', 'me')
 #respond('weather', 'me')

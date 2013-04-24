@@ -1,4 +1,3 @@
-
 help        -  Print Help (this message)
 credits     -  name the creator of this program (less Dr. bar foo)
 --------
@@ -28,6 +27,3 @@ how  *      - provide a generic reply (e.g. "How's it going?")
 
 any string that has your name in it (e.g. "is greg at home"?)
             - respond in some creative manner
-
-please
-2 other commands and responses of your own selection
