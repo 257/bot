@@ -59,7 +59,7 @@ class nix(cmds):
 		else:
 			out =  nixp.communicate()[0]
 		return out
-def cannon(dcv, cmd): # it shoots beans :)
+def cannon(dcv, cmd): # this cannon Sir, shoots beans :)
 	prefix = './.shelve'
 	can    = prefix + '/' + dcv + '/' + cmd
 	with open(can, 'r') as beans:
@@ -116,6 +116,7 @@ def respond(message, sender=""):
 	words     = message.split()
 	cmd_class = classify(words)
 	cmd_class_ins = cmd_class(words)
+	# TODO: s/print/return/
 	print cmd_class_ins.ret().strip()
 
 #respond('open foo'  , 'me')
