@@ -26,8 +26,8 @@ for neighbor in root.iter('countryName'):
 for child in root.iter('ip'):
 	geoloc.update(ip = child.text)
 for child in root[3].iter('{http://www.opengis.net/gml}name'):
-	city = child.text
+	geoloc.update(city = child.text)
 for child in root.iter('{http://www.opengis.net/gml}coordinates'):
-	coor = child.text
+	geoloc.update(coor = child.text)
 
 print geoloc
