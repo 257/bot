@@ -113,7 +113,6 @@ def classify(msg):
 		return cmd_classes[msg[0]]
 	except KeyError:
 		for word in msg:
-			print word
 			try:
 				return me_info[word]
 			except KeyError:
