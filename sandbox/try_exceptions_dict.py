@@ -11,7 +11,7 @@ from time import strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
 
-me_info  = { 'name':'foozy', 'family':'boozy' }
+me_info  = { 'foozy':'name', 'boozy':'family' }
 
 class cmds(object):
 	def __init__(self, msg):
@@ -105,9 +105,21 @@ cmd_classes  = {  'open':py
 		, 'what':whq
 		, 'how':whq
 		}
+def has_my_name(msg):
+	for word in msg:
+		return me_info[word]
 def classify(msg):
-	if msg[0] in cmd_classes:
+	try:
 		return cmd_classes[msg[0]]
+	except KeyError:
+		for word in msg:
+			print word
+			try:
+				return me_info[word]
+			except KeyError:
+				
+
+
 def respond(message, sender=""):
 	message   = message.strip()
 	words     = message.split()
@@ -118,20 +130,22 @@ def respond(message, sender=""):
 
 #respond('open foo'  , 'me')
 
-respond('execute uptime', 'me')
-respond('execute ls',     'me')
-respond('execute ping 127.0.0.1', 'me')
-
-respond('credits', 'me')
+#respond('execute uptime', 'me')
+#respond('execute ls',     'me')
+#respond('execute ping 127.0.0.1', 'me')
+#
+#respond('credits', 'me')
 #respond('help'  , 'me')
-respond('what time is it?'  , 'me')
-respond('what time is it'  , 'me')
-respond('what time are you coming home?'  , 'me')
-respond('what is the value of (2+2)/1.5?'  , 'me')
-respond('what is the value of (2+2)/1.5'  , 'me')
-respond('how is the value of (2+2)/1.5'  , 'me')
-respond('how are you?'  , 'me')
-respond('how are yeah'  , 'me')
-respond('what are we'  , 'me')
-respond('what is this'  , 'me')
-respond('what the *'  , 'me')
+#respond('what time is it?'  , 'me')
+#respond('what time is it'  , 'me')
+#respond('what time are you coming home?'  , 'me')
+#respond('what is the value of (2+2)/1.5?'  , 'me')
+#respond('what is the value of (2+2)/1.5'  , 'me')
+#respond('how is the value of (2+2)/1.5'  , 'me')
+#respond('how are you?'  , 'me')
+#respond('how are yeah'  , 'me')
+#respond('what are we'  , 'me')
+#respond('what is this'  , 'me')
+#respond('what the *'  , 'me')
+respond('is foozy home?', 'me')
+
