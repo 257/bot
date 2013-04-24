@@ -22,12 +22,12 @@ root = ET.fromstring(yourxml)
 #for neighbor in root.iter():
 #	print neighbor.text
 for neighbor in root.iter('countryName'):
-	country = neighbor.text
+	geoloc = dict(country = neighbor.text)
 for child in root.iter('ip'):
-	ip = child.text
+	dict(ip = child.text)
 for child in root[3].iter('{http://www.opengis.net/gml}name'):
 	city = child.text
 for child in root.iter('{http://www.opengis.net/gml}coordinates'):
-	print child.text
+	coor = child.text
 
-#print ip, city, country
+print geoloc
