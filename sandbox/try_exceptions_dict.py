@@ -57,12 +57,8 @@ class nix(cmds):
 def cannon(dcv, cmd): # it shoots beans back:)
 	prefix = './.shelve'
 	can    = prefix + '/' + dcv + '/' + cmd
-	i = 0
 	with open(can, 'r') as beans:
-	#	return beans.read()
-		bag = []
-		for bean in beans:
-			bag.append(bean)
+		bag = beans.readlines()
 		return random.choice(bag)
 class info(cmds):
 	def ret(self):
