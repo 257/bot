@@ -60,10 +60,10 @@ def cannon(dcv, cmd): # it shoots beans back:)
 	i = 0
 	with open(can, 'r') as beans:
 	#	return beans.read()
+		bag = []
 		for bean in beans:
-			i += 1
-		rint = random.randint(1, i)
-	return linecache.getline(can, rint)
+			bag.append(bean)
+		return random.choice(bag)
 class info(cmds):
 	def ret(self):
 		return cannon(self.dcv, self.cmd)
