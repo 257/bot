@@ -33,7 +33,7 @@ class cmds(object):
 		try:
 			self.switch = cmd_args[self.cmd]
 		except KeyError:
-			self.switch = self.cmd = 'generic'
+			self.switch = 'generic'
 		self.arg = msgq
 ping_arg = ['-c', '1']
 cmd_args = {   'ls':''
@@ -78,10 +78,13 @@ class py(cmds):
 	def ret(self):
 		with open(self.arg, 'r') as f:
 			return f.read()
+import fgeoloc
+# we go over the net here, only once
+my_geoloc = fgeoloc.get() 
 class my(cmds):
 	def ret(self):
-		base_url = 'http://api.hostip.info/get_html.php?position=true&').read()
-		urllib.urlopen('http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true').read()
+		return my_geoloc[self.cmd]
+
 
 class whq(cmds):
 	def ret(self):
@@ -127,6 +130,7 @@ cmd_classes  = {  'open':py
 		, 'log':my
 		, 'what':whq
 		, 'how':whq
+		, 'your':my
 		}
 def has_my_name(msg):
 	ret = non_cmds
@@ -171,5 +175,11 @@ def respond(message, sender=""):
 #respond('what the *'  , 'me')
 #respond('is foozy home?', 'me')
 #respond('is he home?', 'me')
-respond('geo', 'me')
-respond('weather', 'me')
+respond('your ip', 'me')
+respond('your logitude', 'me')
+respond('your latitude', 'me')
+respond('your city', 'me')
+respond('your country', 'me')
+respond('your provence', 'me')
+respond('your zipcode', 'me')
+#respond('weather', 'me')
