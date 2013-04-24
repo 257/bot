@@ -24,7 +24,10 @@ class cmds(object):
 		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
-		self.switch = cmd_args[self.cmd]
+		try:
+			self.switch = cmd_args[self.cmd]
+		except KeyError:
+			self.switch = self.cmd = 'generic'
 		self.arg = msgq
 ping_arg = ['-c', '1'] #, '|', 'tail', '-1'] # TODO: return only the last line
 cmd_args = {   'ls':''
@@ -34,6 +37,7 @@ cmd_args = {   'ls':''
 		, 'credits':' '
 		, 'time':'is it'
 		, 'is'  : 'the value of'
+		, 'generic' : 'generic'
 	   }
 class nix(cmds):
 	def ret(self):
@@ -43,6 +47,7 @@ class nix(cmds):
 			wholeshbang.extend(self.switch)
 		if self.arg != '':
 			wholeshbang.append(self.arg)
+		# TODO: ugly pipes here man, use 're' for *'s sake
 		nixp = subprocess.Popen(wholeshbang, stdout=subprocess.PIPE)
 		if self.cmd == 'ping':
 			grepp = subprocess.Popen(
@@ -54,7 +59,7 @@ class nix(cmds):
 		else:
 			out =  nixp.communicate()[0]
 		return out
-def cannon(dcv, cmd): # it shoots beans back:)
+def cannon(dcv, cmd): # it shoots beans :)
 	prefix = './.shelve'
 	can    = prefix + '/' + dcv + '/' + cmd
 	with open(can, 'r') as beans:
@@ -78,9 +83,10 @@ class whq(cmds):
 			if self.cmd == 'is':
 				realarg = self.arg.pop()
 				if ' '.join(self.arg) == self.switch:
-					return str(eval(realarg)) # cast str here for .split
+					# cast to str here for .split
+					return str(eval(realarg))
 				else:
-					return cannon(self.dcv, self.cmd)
+					return cannon(self.dcv, gen)
 			elif self.cmd == 'time':
 				if ' '.join(self.arg) == self.switch:
 					return  strftime("%I:%M:%S %p")
@@ -91,7 +97,7 @@ class whq(cmds):
 		elif self.dcv == 'how':
 			return cannon(self.dcv, gen)
 		else:
-			return 'how did you get there'
+			return 'how did you get here'
 cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':info
@@ -126,6 +132,8 @@ respond('what time are you coming home?'  , 'me')
 respond('what is the value of (2+2)/1.5?'  , 'me')
 respond('what is the value of (2+2)/1.5'  , 'me')
 respond('how is the value of (2+2)/1.5'  , 'me')
-#respond('how are you?'  , 'me')
-#respond('how are yeah'  , 'me')
-
+respond('how are you?'  , 'me')
+respond('how are yeah'  , 'me')
+respond('what are we'  , 'me')
+respond('what is this'  , 'me')
+respond('what the *'  , 'me')
