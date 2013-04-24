@@ -11,7 +11,7 @@ from time import strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
 
-me_info  = { 'foozy':'name', 'boozy':'family' }
+me_info  = { 'name':'foozy', 'family':'boozy' }
 
 class cmds(object):
 	def __init__(self, msg):
@@ -95,6 +95,9 @@ class whq(cmds):
 			return cannon(self.dcv, gen)
 		else:
 			return 'how did you get here'
+class with_my_name(cmds):
+	def ret(self):
+		return cannon(self.dcv, self.cmd)
 cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':info
@@ -107,17 +110,18 @@ cmd_classes  = {  'open':py
 		}
 def has_my_name(msg):
 	for word in msg:
-		return me_info[word]
+		for info in me_info:
+			if word == me_info[info]:
+				ret = with_my_name
+			else:
+				ret = None
+	return ret
+
 def classify(msg):
 	try:
 		return cmd_classes[msg[0]]
 	except KeyError:
-		for word in msg:
-			try:
-				return me_info[word]
-			except KeyError:
-				
-
+		return has_my_name(msg)
 
 def respond(message, sender=""):
 	message   = message.strip()
