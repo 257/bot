@@ -9,7 +9,7 @@ from collections import deque
 #what time is it
 from time import strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
- 
+import urllib 
 
 me_info  = { 'name':'foozy', 'family':'boozy' }
 def me_info_var():
@@ -80,7 +80,8 @@ class py(cmds):
 			return f.read()
 class my(cmds):
 	def ret(self):
-		return None
+		base_url = 'http://api.hostip.info/get_html.php?position=true&').read()
+		urllib.urlopen('http://api.hostip.info/get_html.php?ip=12.215.42.19&position=true').read()
 
 class whq(cmds):
 	def ret(self):
@@ -121,8 +122,8 @@ cmd_classes  = {  'open':py
 		, 'execute':nix
 		, 'credits':info
 		, 'help':info
-		, 'dic':my
 		, 'geo':my
+		, 'weather':my
 		, 'log':my
 		, 'what':whq
 		, 'how':whq
@@ -168,5 +169,7 @@ def respond(message, sender=""):
 #respond('what are we'  , 'me')
 #respond('what is this'  , 'me')
 #respond('what the *'  , 'me')
-respond('is foozy home?', 'me')
-respond('is he home?', 'me')
+#respond('is foozy home?', 'me')
+#respond('is he home?', 'me')
+respond('geo', 'me')
+respond('weather', 'me')
