@@ -7,7 +7,7 @@ from collections import deque
 
 
 #what time is it
-from time import gmtime, strftime
+from time import strftime
 #what is the value of X - X is a string like (2+2)/1.5, report it's value
  
 
