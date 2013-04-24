@@ -1,9 +1,6 @@
 #!/usr/bin/python
 
-import os
-import sys
-import subprocess # TODO: use subprocess instead of commnads
-import linecache
+import subprocess
 import random
 #import commands
 from collections import deque
@@ -29,7 +26,7 @@ class cmds(object):
 		except KeyError:
 			self.switch = self.cmd = 'generic'
 		self.arg = msgq
-ping_arg = ['-c', '1'] #, '|', 'tail', '-1'] # TODO: return only the last line
+ping_arg = ['-c', '1']
 cmd_args = {   'ls':''
 		, 'uptime':''
 		, 'ping':ping_arg
