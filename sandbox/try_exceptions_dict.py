@@ -154,14 +154,15 @@ def respond(message, sender=""):
 	cmd_class = classify(words)
 	cmd_class_ins = cmd_class(words)
 	# TODO: s/print/return/
-	print cmd_class_ins.ret().strip()
+	#print cmd_class_ins.ret().strip()
+	return cmd_class_ins.ret().strip()
 
 #respond('open foo'  , 'me')
 #respond('execute uptime', 'me')
 #respond('execute ls',     'me')
 #respond('execute ping 127.0.0.1', 'me')
-respond('help'  , 'me')
-respond('credits', 'me')
+#respond('help'  , 'me')
+#respond('credits', 'me')
 #respond('what time is it?'  , 'me')
 #respond('what time is it'  , 'me')
 #respond('what time are you coming home?'  , 'me')
