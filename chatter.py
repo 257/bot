@@ -2,16 +2,12 @@
 
 import subprocess
 import random
-#import commands
 from collections import deque
 import re
 
-
-#what time is it
 from time import strftime
-#what is the value of X - X is a string like (2+2)/1.5, report it's value
 
-me_info  = { 'name':'foozy', 'family':'boozy' }
+me_info  = { 'name':'peymane', 'family':'marandi' }
 def me_info_var():
 	ret = []
 	for info in me_info:
@@ -72,7 +68,7 @@ def cannon(dcv, cmd): # this cannon Sir, shoots beans :)
 	with open(can, 'r') as beans:
 		bag = beans.readlines()
 		if dcv == 'info' and cmd == 'help':
-			return '\n'.join(bag)
+			return ''.join(bag)
 		else:
 			return random.choice(bag)
 class info(cmds):
@@ -83,13 +79,14 @@ class py(cmds):
 		with open(self.cmd, 'r') as f:
 			return f.read()
 import fgeoloc
-# we go over the net here, only once
+# we go over the net here once, and only once
 my_geoloc = fgeoloc.get() 
 class my(cmds):
 	def ret(self):
-		return my_geoloc[self.cmd]
-
-
+		try:
+			return my_geoloc[self.cmd]
+		except KeyError:
+			return 'not found'
 class whq(cmds):
 	def ret(self):
 		gen = 'generic'

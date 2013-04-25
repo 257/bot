@@ -214,7 +214,7 @@ class Talkbot206(sleekxmpp.ClientXMPP):
                     response = chatter.respond( text, sender=msg['from'] )  # too bad we don't use this response text (hint, hint [COMP206] )
                     # stock response: pretty boring, isn't it?
                     #replytext = "Thanks for sending: %s... [reply #%d]" % (text[0:10],replied)
-                    replytext = "%s... [reply #%d]" % (response,replied)
+                    replytext = "%s" % (response)
                     print "Sending reply",replytext
                     # send the reply
                     msg.reply( replytext ).send()
