@@ -42,8 +42,11 @@ cmd_args = {   'ls':''
 		, 'is'  : 'the value of'
 		, 'generic' : 'generic'
 	   }
+nix_cmd_arg = ['ls', 'uptime', 'ping']
 class nix(cmds):
 	def ret(self):
+		if self.cmd not in nix_cmd_arg:
+			return 'you should never mix your drinks!, we do not run that command here:)'
 		self.arg = ' '.join(self.arg)
 		wholeshbang = [self.cmd]
 		if self.switch != '':
@@ -76,17 +79,24 @@ class info(cmds):
 		return cannon(self.dcv, self.cmd)
 class py(cmds):
 	def ret(self):
-		with open(self.cmd, 'r') as f:
-			return f.read()
+		try:
+			with open(self.cmd, 'r') as f:
+				return f.read()
+		except IOError:
+			return 'no file: ' + self.cmd
 import fgeoloc
 # we go over the net here once, and only once
 my_geoloc = fgeoloc.get() 
 class my(cmds):
 	def ret(self):
-		try:
-			return my_geoloc[self.cmd]
-		except KeyError:
-			return 'not found'
+		if self.cmd != 'quote':
+			try:
+				return my_geoloc[self.cmd]
+			except KeyError:
+				return 'not found'
+		else:
+			return cannon(self.dcv, self.cmd)
+
 class whq(cmds):
 	def ret(self):
 		gen = 'generic'
