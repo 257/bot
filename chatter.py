@@ -4,6 +4,7 @@ import subprocess
 import random
 #import commands
 from collections import deque
+import re
 
 
 #what time is it
@@ -27,6 +28,7 @@ class cmds(object):
 		if len(msgq) == 1:
 			msgq.appendleft('info')
 		msgq[-1] = msgq[-1].rsplit('?', 1)[0]
+		msgq[-1] = msgq[-1].rsplit(',', 1)[0]
 		self.dcv = msgq.popleft()
 		self.cmd = msgq.popleft()
 		try:
@@ -147,6 +149,16 @@ def classify(msg):
 		return cmd_classes[msg[0]]
 	except KeyError:
 		return has_my_name(msg)
+def strip_pls(msg):
+	if 'please' in msg:
+		msg.remove('please')
+	if 'please,' in msg:
+		msg.remove('please,')
+	if 'please?' in msg:
+		msg.remove('please?')
+	if ',please' in msg:
+		msg.remove(',please')
+	return msg
 
 def respond(message, sender=""):
 	message = message.lower()
@@ -155,12 +167,15 @@ def respond(message, sender=""):
 	message   = message.strip()
 	words     = message.split()
 	# strip please out
+	words = strip_pls(words)
 	cmd_class = classify(words)
 	cmd_class_ins = cmd_class(words)
-	print cmd_class_ins.ret().strip()
-	#return cmd_class_ins.ret().strip()
+	#print cmd_class_ins.ret().strip()
+	return cmd_class_ins.ret().strip()
 
-respond('What time is it?'  , 'me')
+#respond('What time is it?'  , 'me')
+#respond('What time is it, please?'  , 'me')
+#respond('please, What time is it, please?'  , 'me')
 #respond('open foo'  , 'me')
 #respond('execute uptime', 'me')
 #respond('execute ls',     'me')
